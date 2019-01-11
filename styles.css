@@ -1,0 +1,9 @@
+body {
+    background-image: url("../img/dice-background.jpg");
+    background-size: cover;
+    color: #D80003;
+    color: #f0ad4e;
+    color: #fff;
+    font-size: 14pt;
+    font-family: 'Limelight', cursive;
+}

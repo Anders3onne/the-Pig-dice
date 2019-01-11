@@ -75,3 +75,117 @@ Referee.prototype.checkGame = function () {
         this.gameover = 1;
     }
 }
+
+function switchClass(player1, player2) {
+    if (player1.turn === 1) {
+        $("div.player1").addClass("highlight");
+        $("div.player2").removeClass("highlight");
+    } else if (player2.turn === 1) {
+        $("div.player1").removeClass("highlight");
+        $("div.player2").addClass("highlight");
+
+    }
+}
+
+function showScore(player1, player2) {
+    $("#player1RunningTotal").text("Running Total: " + player1.runningTotal);
+    $("#player2RunningTotal").text("Running Total: " + player2.runningTotal);
+
+    $("#player1Total").text("Total: " + player1.score);
+    $("#player2Total").text("Total: " + player2.score);
+}
+
+function showDice(dice) {
+    if (dice >= 1) {
+        $("img").attr("src", "img/" + dice + ".png").hide().fadeIn();
+    }
+
+}
+
+$(document).ready(function () {
+    var gameChoice = $('input:radio[name=gameChoice]:checked').val();
+    var player1 = new Player("mister");
+    var player2 = new Player(gameChoice);
+    var jimmyTheReferee = new Referee();
+
+
+    jimmyTheReferee.players.push(player1, player2);
+    jimmyTheReferee.pickPlayer();
+
+
+
+    $("#gameChoice").click(function () {
+        gameChoice = $('input:radio[name=gameChoice]:checked').val();
+        if (gameChoice === "ai") {
+            // console.log("ai");
+            jimmyTheReferee.players[1].playerID = "ai";
+
+            //
+
+        }
+        $(this).parent().parent().fadeOut(700, function () {
+            $("#twoPlayer").fadeIn();
+        });
+    });
+
+    setInterval(function () {
+        if (player2.playerID === "ai" && player2.turn === 1) {
+            if (player2.runningTotal <= 15) {
+                jimmyTheReferee.throw();
+                $("#hold").hide();
+                $("#roll").hide();
+            } else {
+                jimmyTheReferee.hold();
+                $("#hold").fadeIn();
+                $("#roll").fadeIn();
+            }
+            if (player2.turn === 0) {
+                $("#hold").fadeIn();
+                $("#roll").fadeIn();
+            }
+
+
+
+            jimmyTheReferee.checkGame();
+            if (jimmyTheReferee.gameover === 1) {
+                $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
+            }
+            showDice(jimmyTheReferee.dice);
+            showScore(player1, player2);
+            switchClass(player1, player2);
+
+        }
+
+    }, 1000);
+    // setInterval(jimmyTheReferee.checkAiTurn, 1000);
+
+    $("#roll").click(function () {
+        jimmyTheReferee.checkGame();
+        jimmyTheReferee.throw();
+
+
+        showDice(jimmyTheReferee.dice);
+        showScore(player1, player2);
+        switchClass(player1, player2);
+
+        if (jimmyTheReferee.gameover === 1) {
+            $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
+        }
+
+
+    });
+
+    $("#hold").click(function () {
+
+        jimmyTheReferee.hold();
+        showScore(player1, player2);
+        jimmyTheReferee.checkGame();
+
+        switchClass(player1, player2);
+        showDice(player1, player2);
+
+        if (jimmyTheReferee.gameover === 1) {
+            $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
+        }
+    });
+});

@@ -111,9 +111,6 @@ $(document).ready(function () {
 
     jimmyTheReferee.players.push(player1, player2);
     jimmyTheReferee.pickPlayer();
-
-
-
     $("#gameChoice").click(function () {
         gameChoice = $('input:radio[name=gameChoice]:checked').val();
         if (gameChoice === "ai") {
@@ -144,8 +141,6 @@ $(document).ready(function () {
                 $("#roll").fadeIn();
             }
 
-
-
             jimmyTheReferee.checkGame();
             if (jimmyTheReferee.gameover === 1) {
                 $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
@@ -171,8 +166,6 @@ $(document).ready(function () {
         if (jimmyTheReferee.gameover === 1) {
             $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
         }
-
-
     });
 
     $("#hold").click(function () {

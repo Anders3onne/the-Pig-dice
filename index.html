@@ -2,76 +2,59 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <link href="bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="styles.css" rel="stylesheet" type="text/css">
-    <script src="js/jquery-3.1.1.js"></script>
-    <script src="script.js"></script>
-    <title></title>
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery-3.0.0.js"></script>
+    <script src="js/scripts.js"></script>
+    <title>Pig Dice Game</title>
 </head>
 
 <body>
-    <div id="preheader">
-        <p class="header">Pig Dice</p>
-    </div>
-    <div class="container">
-        <div class="row" id="intro">
-            <div class="col-md-12 spacer">
-                <div class="wrapper">
-                    <p>
-                        <label for="gameChoice"> Two Player
-                            <input type="radio" name="gameChoice" value="twoPlayer" checked>
-                        </label>
-                    </p>
-                    <p>
-                        <label for="gameChoice"> Play Against Computer
-                            <input type="radio" name="gameChoice" value="ai">
-                        </label>
-                    </p>
-                    <button type="button" id="gameChoice" class="btn btn-success btn-lg" name="button">Play</button>
-                </div>
-            </div>
-        </div>
-        <div class="row" id="twoPlayer">
-            <div class="col-md-12 spacer">
-                <div class="wrapper center">
-                    <h2>Dice:</h2>
-                    <div id="dice">
-                        <img src="img/1.png" />
-                    </div>
-                    <div id="winner">
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 spacer bgColor">
-                <div class="wrapper player1">
-                    <h2> Player 1</h2>
-                    <div id="player1RunningTotal">
-                        Running Total: 0
-                    </div>
-                    <div id="player1Total">
-                        Total: 0
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 spacer bgColor">
-                <div class="wrapper player2">
-                    <h2>Player 2</h2>
-                    <div id="player2RunningTotal">
-                        Running Total: 0
-                    </div>
-                    <div id="player2Total">
-                        Total: 0
-                    </div>
-                </div>
-            </div>
-            <div class="center">
-                <button type="button" id="roll" class="btn btn-success btn-lg" name="button">Roll</button>
-                <button type="button" id="hold" class="btn btn-warning btn-lg" name="button">Hold</button>
 
+    <div class="start-menu container">
+        <div class="jumbotron">
+            <h1>Let's play Pig Dice!</h1>
+            <form id="player-1">
+                <div class="form-group">
+                    <label for="player1Name">Player 1 Name:</label>
+                    <input required class="player1Name form-control" type="text">
+                </div>
+            </form>
+            <form id="player-2">
+                <div class="form-group">
+                    <label for="player2Name">Player 2 Name:</label>
+                    <input required class="player2Name form-control" type="text">
+                </div>
+            </form>
+            <button id="start" class="btn-info btn">Start</button>
+        </div>
+    </div>
+
+    <div class="player-console container">
+        <button id="new-game" class="btn-success btn">NEW GAME</button>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Player 1: <span id="player1Name"><span></h2>
+                <button id="player1-roll" class="btn-success btn">Roll</button>
+                <button id="player1-hold" class="btn-success btn">Hold</button>
+                <h2>Dice Roll: <span id="die-roll-1"></span></h2>
+                <p>Round Total: <span id="round-total-1"></span></p>
+                <p>Total Score: <span id="total-score-1"></span></p>
+            </div>
+
+            <div class="col-md-6">
+                <h2>Player 2: <span id="player2Name"><span></h2>
+                <button id="player2-roll" class="btn-success btn">Roll</button>
+                <button id="player2-hold" class="btn-success btn">Hold</button>
+                <h2>Dice Roll: <span id="die-roll-2"></span></h2>
+                <p>Round Total: <span id="round-total-2"></span></p>
+                <p>Total Score: <span id="total-score-2"></span></p>
             </div>
         </div>
     </div>
+
+
+
 </body>
 
 </html>

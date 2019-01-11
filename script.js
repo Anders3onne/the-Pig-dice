@@ -27,7 +27,24 @@ Referee.prototype.runningTotal = function (player) {
     player.runningTotal = 0;
 }
 Referee.prototype.throw = function () {
-        var result = Math.floor((Math.random() * 6) + 1);
-        if (this.gameover === 0) {
-            this.dice = result;
+    var result = Math.floor((Math.random() * 6) + 1);
+    if (this.gameover === 0) {
+        this.dice = result;
+    }
+    f(this.players[0].turn === 1) {
+        if (result != 1) {
+            this.players[0].runningTotal += result;
+        } else {
+            this.players[0].runningTotal = 0;
+            this.switchPlayer();
         }
+    }
+    else if (this.players[1].turn === 1) {
+        if (result != 1) {
+            this.players[1].runningTotal += result;
+        } else {
+            this.players[1].runningTotal = 0;
+            this.switchPlayer();
+        }
+    }
+}

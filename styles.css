@@ -35,3 +35,20 @@ body {
 img {
     height: 100px;
 }
+
+.spacer {
+    margin-top: 10px;
+    /* define margin as you see fit */
+}
+
+.wrapper {
+    margin: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    box-shadow: 3px 3px 11px #000000;
+}
+
+#preheader {
+    background-color: #449d44;
+}

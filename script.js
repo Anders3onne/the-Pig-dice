@@ -1,205 +1,128 @@
-function Player(playerID) {
-    this.score = 0;
-    this.runningTotal = 0;
-    this.turn = 0;
-    this.playerID = playerID;
+//business logic
+var player1 = "";
+var player2 = "";
+
+var throwdice = function () {
+    return Math.floor(6 * Math.random()) + 1;
 }
 
-function Referee() {
-    this.players = [];
-    this.winner = "";
-    this.gameover = 0;
-    this.dice = 0;
+function Player(turn) {
+    this.roll = 0;
+    this.tempscore = 0;
+    this.totalscore = 0;
+    this.turn = turn;
+    this.playerName;
 }
 
-Referee.prototype.switchPlayer = function () {
-    if (this.players[0].turn === 1) {
-        this.players[0].turn = 0;
-        this.players[1].turn = 1;
-
-    } else if (this.players[1].turn === 1) {
-        this.players[0].turn = 1;
-        this.players[1].turn = 0;
-    }
-
-}
-
-Referee.prototype.runningTotal = function (player) {
-    player.score += player.runningTotal;
-    player.runningTotal = 0;
-}
-
-Referee.prototype.throw = function () {
-    var result = Math.floor((Math.random() * 6) + 1);
-    if (this.gameover === 0) {
-        this.dice = result;
-    }
-    if (this.players[0].turn === 1) {
-        if (result != 1) {
-            this.players[0].runningTotal += result;
-        } else {
-            this.players[0].runningTotal = 0;
-            this.switchPlayer();
-        }
-    } else if (this.players[1].turn === 1) {
-        if (result != 1) {
-            this.players[1].runningTotal += result;
-        } else {
-            this.players[1].runningTotal = 0;
-            this.switchPlayer();
-        }
+// checking for 1
+Player.prototype.rollone = function () {
+    if (this.roll === 1) {
+        this.tempscore = 0;
+        alert("Sorry " + this.playerName + ", you rolled a 1! Your turn is over!")
+        // this.changeturn();
+    } else {
+        this.tempscore += this.roll;
     }
 }
 
-Referee.prototype.hold = function () {
-    if (this.players[0].turn === 1) {
-        this.runningTotal(this.players[0]);
-        this.switchPlayer();
-
-    } else if (this.players[1].turn === 1) {
-        this.runningTotal(this.players[1]);
-        this.switchPlayer();
-
-    }
+// hold
+Player.prototype.hold = function () {
+    this.totalscore += this.tempscore;
+    this.tempscore = 0;
+    // this.changeturn();
+    alert(this.playerName + ", your turn is over, pass the mouse!");
 }
 
-Referee.prototype.pickPlayer = function () {
-    this.players[0].turn = 1;
-}
-Referee.prototype.checkGame = function () {
-    if (this.players[0].score >= 100) {
-        this.players[1].turn = 0;
-        this.players[0].turn = 0;
-        this.winner = "Player 1 ";;
-        this.gameover = 1;
-    } else if (this.players[1].score >= 100) {
-        this.players[1].turn = 0;
-        this.players[0].turn = 0;
-        this.winner = "Player 2 ";
-        this.gameover = 1;
-    }
-}
-
-// Referee.prototype.checkAiTurn = function (){
-//   // console.log(this.players[1].playerID === "ai")
-//   if (this.players[1].playerID === "ai" && this.players[1].turn ===1){
-//     //throw dice once a second
-//     setInterval(this.throw, 1000);
-//     //if after 4 tosses hold
-//
+// // changing turn
+// Player.prototype.changeturn = function () {
+//   if (this.roll ===1) {
+//     this.turn = false;
+//   } else {
+//     this.turn = true;
 //   }
 // }
-
-//interface functions
-function switchClass(player1, player2) {
-    if (player1.turn === 1) {
-        $("div.player1").addClass("highlight");
-        $("div.player2").removeClass("highlight");
-    } else if (player2.turn === 1) {
-        $("div.player1").removeClass("highlight");
-        $("div.player2").addClass("highlight");
-
+// check for 100
+Player.prototype.winnerCheck = function () {
+    if (this.totalscore >= 100) {
+        alert(this.playerName + " You are the winner!");
     }
 }
 
-function showScore(player1, player2) {
-    $("#player1RunningTotal").text("Running Total: " + player1.runningTotal);
-    $("#player2RunningTotal").text("Running Total: " + player2.runningTotal);
-
-    $("#player1Total").text("Total: " + player1.score);
-    $("#player2Total").text("Total: " + player2.score);
+Player.prototype.newGame = function () {
+    //debugger;
+    this.roll = 0;
+    this.tempscore = 0;
+    this.totalscore = 0;
+    this.playerName = "";
 }
 
-function showDice(dice) {
-    if (dice >= 1) {
-        $("img").attr("src", "img/" + dice + ".png").hide().fadeIn();
-    }
-
+var clearValues = function () {
+    $(".player1Name").val("");
+    $(".player2Name").val("");
 }
 
+// User Interface
 $(document).ready(function () {
-var gameChoice = $('input:radio[name=gameChoice]:checked').val();
-var player1 = new Player("mister");
-var player2 = new Player(gameChoice);
-var jimmyTheReferee = new Referee();
 
+    $("button#start").click(function (event) {
+        player1 = new Player(true);
+        player2 = new Player(false);
+        $(".player-console").show();
+        $(".start-menu").hide();
 
-jimmyTheReferee.players.push(player1, player2);
-jimmyTheReferee.pickPlayer();
-$("#gameChoice").click(function () {
-    gameChoice = $('input:radio[name=gameChoice]:checked').val();
-    if (gameChoice === "ai") {
-        // console.log("ai");
-        jimmyTheReferee.players[1].playerID = "ai";
+        var player1Name = $(".player1Name").val();
+        $("#player1Name").text(player1Name);
 
-        //
+        var player2Name = $(".player2Name").val();
+        $("#player2Name").text(player2Name);
 
-    }
-    $(this).parent().parent().fadeOut(700, function () {
-        $("#twoPlayer").fadeIn();
+        player1.playerName = player1Name;
+        player2.playerName = player2Name;
+
     });
-});
+    $("button#new-game").click(function (event) {
+        $(".player-console").hide();
+        clearValues();
+        player1.newGame();
+        player2.newGame();
+        $("#round-total-1").empty();
+        $("#total-score-1").empty();
+        $("#die-roll-1").empty();
+        $("#round-total-2").empty();
+        $("#total-score-2").empty();
+        $("#die-roll-2").empty();
 
-setInterval(function () {
-    if (player2.playerID === "ai" && player2.turn === 1) {
-        if (player2.runningTotal <= 15) {
-            jimmyTheReferee.throw();
-            $("#hold").hide();
-            $("#roll").hide();
-        } else {
-            jimmyTheReferee.hold();
-            $("#hold").fadeIn();
-            $("#roll").fadeIn();
-        }
-        if (player2.turn === 0) {
-            $("#hold").fadeIn();
-            $("#roll").fadeIn();
-        }
+        $(".start-menu").show();
+    });
 
+    $("button#player1-roll").click(function (event) {
+        player1.roll = throwdice();
+        $("#die-roll-1").text(player1.roll);
+        player1.rollone();
+        $("#round-total-1").text(player1.tempscore);
+    });
 
+    $("button#player2-roll").click(function (event) {
+        player2.roll = throwdice();
+        $("#die-roll-2").text(player2.roll);
+        player2.rollone();
+        $("#round-total-2").text(player2.tempscore);
+    });
 
-        jimmyTheReferee.checkGame();
-        if (jimmyTheReferee.gameover === 1) {
-            $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
-        }
-        showDice(jimmyTheReferee.dice);
-        showScore(player1, player2);
-        switchClass(player1, player2);
+    $("button#player1-hold").click(function (event) {
+        player1.hold();
+        $("#total-score-1").text(player1.totalscore);
+        $("#round-total-1").empty();
+        $("#die-roll-1").empty();
+        player1.winnerCheck();
+    });
 
-    }
-
-}, 1000);
-// setInterval(jimmyTheReferee.checkAiTurn, 1000);
-
-$("#roll").click(function () {
-    jimmyTheReferee.checkGame();
-    jimmyTheReferee.throw();
-
-
-    showDice(jimmyTheReferee.dice);
-    showScore(player1, player2);
-    switchClass(player1, player2);
-
-    if (jimmyTheReferee.gameover === 1) {
-        $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
-    }
-
-
-});
-
-$("#hold").click(function () {
-
-    jimmyTheReferee.hold();
-    showScore(player1, player2);
-    jimmyTheReferee.checkGame();
-
-    switchClass(player1, player2);
-    showDice(player1, player2);
-
-    if (jimmyTheReferee.gameover === 1) {
-        $("#winner").show().text(jimmyTheReferee.winner + "wins!!!");
-    }
-});
-});
+    $("button#player2-hold").click(function (event) {
+        player2.hold();
+        $("#total-score-2").text(player2.totalscore);
+        $("#round-total-2").empty();
+        $("#die-roll-2").empty();
+        player2.winnerCheck();
+    });
 
 });

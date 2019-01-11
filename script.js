@@ -22,3 +22,12 @@ Referee.prototype.switchPlayer = function () {
     }
 
 }
+Referee.prototype.runningTotal = function (player) {
+    player.score += player.runningTotal;
+    player.runningTotal = 0;
+}
+Referee.prototype.throw = function () {
+        var result = Math.floor((Math.random() * 6) + 1);
+        if (this.gameover === 0) {
+            this.dice = result;
+        }

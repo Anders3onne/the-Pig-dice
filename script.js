@@ -86,7 +86,9 @@ $(document).ready(function () {
         $("#roll").click(function () {
             roll();
             $("#round-total").text(roundTotal);
-        }) // end roll click
+        })
+
+        // end roll click
 
         $("#hold").click(function () {
             //must add commit remove img dice if click hold
@@ -114,7 +116,8 @@ $(document).ready(function () {
             button: "YEP!",
         });
     })
-}) // end ready
+})
+// end ready
 
 function reload() {
     location.reload();
